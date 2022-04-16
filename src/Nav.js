@@ -1,12 +1,26 @@
-import React from 'react'
-
+import React, { useEffect, useState } from 'react'
+import './Nav.css'
 function Nav() {
+  const [show,handleShow]=useState(false);
+  const transitionNavBar=()=>{
+    if(window.scrollY>100){
+      handleShow(true);
+    }else{
+      handleShow(false);
+    }
+  };
+  useEffect(()=>{
+    window.addEventListener("scroll",transitionNavBar);
+    return ()=>{
+      window.removeEventListener("scroll",transitionNavBar);
+    }
+  },[])
   return (
-    <div className="nav">
+    <div className={`nav ${show && 'nav_black'}`}>
         <div className="nav_contents">
             <img 
             className="nav_logo"
-            src="data:image/png;base64,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"
+            src="http://assets.stickpng.com/images/580b57fcd9996e24bc43c529.png"
             alt="logo"/>
             <img
             className="nav_avatar"
